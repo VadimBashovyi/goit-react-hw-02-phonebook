@@ -9,14 +9,16 @@ class Phonebook extends Component {
   };
 
   valueInput = (e) => {
+    const {name, value} = e.currentTarget
     this.setState({
-      [e.currentTarget.name]: e.currentTarget.value,
+      [name]: value,
     });
   };
 
   valueSubmit = (e) => {
+    const { name, number }= this.state
     e.preventDefault();
-    this.props.onAddContact(this.state.name, this.state.number);
+    this.props.onAddContact(name, number);
     this.reset();
   };
 
