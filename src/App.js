@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { nanoid } from 'nanoid'
+import { v4 as uuidv4 } from 'uuid'
 import './App.css'
 import Container from './components/Container/Container'
 import Phonebook from './components/Phonebook/Phonebook'
@@ -22,19 +22,19 @@ class App extends Component {
       alert(`${name} is already in contacts`)
       return
     }
-    const obj = { id: nanoid(), name, number }
-    this.setState((prevState) => ({ contacts: [...prevState.contacts, obj] }))
+    const obj = { id: uuidv4(), name, number }
+    this.setState((oldState) => ({ contacts: [...oldState.contacts, obj] }))
   }
 
   onCheck = (value) => {
     return this.state.contacts.find(
-      (el) => el.name.toUpperCase() === value.toUpperCase(),
+      (contact) => contact.name.toUpperCase() === value.toUpperCase(),
     )
   }
 
   deleteContacts = (id) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter((el, index) => el.id !== id),
+    this.setState((oldState) => ({
+      contacts: oldState.contacts.filter((el, index) => el.id !== id),
     }))
   }
 
@@ -43,9 +43,9 @@ class App extends Component {
   }
 
   filterContacts(value, arr) {
-    const filterContactsMethod = value.filter((el) =>
-      el.name.toUpperCase().includes(arr.toUpperCase()),
-    )
+    const filterContactsMethod = value
+      .filter((contact) => contact.name.toLowerCase().includes(arr))
+      .sort((a, b) => a.name.localeCompare(b.name))
     return filterContactsMethod
   }
 
